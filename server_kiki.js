@@ -1,4 +1,4 @@
-ubl// server.js
+// server.js
 
 // Generate a new instance of express server.
 var express = require('express'), 
@@ -22,7 +22,7 @@ var server = http.createServer(app).listen(port, host, function() {
 
 // At the root of your website, we show the index.html page
 app.get('/', function(req, res) {
-  res.sendfile('./public/index.html')
+  res.sendfile('./public/index_kiki.html')
 });
 
 // Database initialization
