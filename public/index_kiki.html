@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+  <head>
+  <script>
+    function showDiv() {
+      document.getElementById('panoramaDiv').style.display = "block";
+    }
+
+    function changeImage (element) {
+    var n,
+        imageData = [
+            [
+                {
+                    src: "/0.0,0.0,25.6.jpg"
+                },
+                {
+                    src: "/0.0,0.0,37.0.jpg"
+                },
+                {
+                    src: "/0.0,0.0,48.6.jpg"
+                }
+            ],
+            [
+                {
+                    src: "/0.0,0.0,25.6.jpg"
+                },
+                {
+                    src: "/0.0,0.0,15.0.jpg"
+                },
+                {
+                    src: "/0.0,0.0,6.2.jpg"
+                }
+            ]
+        ];
+        if (element > -1) {
+            document.getElementById('image0').src = imageData[element][1].src;
+        } else {
+            for (n = 0; n < imageData.length; n++) {
+                document.getElementById('image0').src = imageData[n][element].src;
+            }
+        }
+        return;
+    }
+  </script>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Neato Street View</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Neato Street View - Computational Robotics Fall 2015 Final Project</h1>
+        <p class="header"></p>
+      </header>
+	   
+      <table style="width:100%; border:5px solid black;"">
+        <tr>
+          <td>
+            <img src="/map.png" alt="CC300"
+        		usemap="#map">
+
+        	  <map name="map">
+        		<area shape="circle" coords="98,258,6" onclick="showDiv()" alt="Sun">
+        		<area shape="circle" coords="238,189,6" onclick="showDiv()" alt="Mercury">
+        		<area shape="circle" coords="214,292,6" onclick="showDiv()" alt="Venus">
+        		<area shape="circle" coords="319,244,6" onclick="showDiv()" alt="Venus">
+        		<area shape="circle" coords="295,329,6" onclick="showDiv()" alt="Venus">
+        		<area shape="circle" coords="370,174,6" onclick="showDiv()" alt="Venus">
+        	  </map>
+          </td>
+          <td>
+            <div id="panoramaDiv"  style="display:none;">
+              <button><img src="/left_arrow.png" width="40" onclick="changeImage(0)"></button>
+              <img id="image0" src="/0.0,0.0,25.6.jpg" alt="waypoint" width="900" height="467">
+              <button><img src="/right_arrow.png" width="40" onclick="changeImage(1)"></button>
+              
+              <!--<div>
+                  <h1 id="caption0">Caption for image 1.1</h1>
+                  <button onclick="changeImage(0);">Click to change!</button>
+                  <img id="image" src="/map.png" >
+                  </div>-->
+            </div>
+          </td>
+        </tr>
+      </table>
+  </body>
+</html>
