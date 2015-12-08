@@ -31,6 +31,12 @@
 
     function showDiv() {
       document.getElementById('panoramaDiv').style.display = "block";
+      document.getElementById('map').style.display = "none";
+    }
+
+    function showMap() {
+      document.getElementById('map').style.display = "block";
+      document.getElementById('panoramaDiv').style.display = "none";
     }
   </script>
 
@@ -53,30 +59,25 @@
         <p class="header"></p>
       </header>
 	   
-      <table style="width:100%; border:5px solid black;">
-        <tr>
-          <td>
-            <img src="/map.png" alt="CC300"
-            usemap="#map">
+      <div id="map" style="display:block" align="center">
+          <img src="/map.png" alt="CC300"
+          usemap="#map">
 
-            <map name="map">
-            <area shape="circle" coords="98,258,6" onclick="showDiv()" alt="waypoint1">
-            <area shape="circle" coords="238,189,6" onclick="showDiv()" alt="waypoint2">
-            <area shape="circle" coords="214,292,6" onclick="showDiv()" alt="waypoint3">
-            <area shape="circle" coords="319,244,6" onclick="showDiv()" alt="waypoint4">
-            <area shape="circle" coords="295,329,6" onclick="showDiv()" alt="waypoint5">
-            <area shape="circle" coords="370,174,6" onclick="showDiv()" alt="waypoint6">
-            </map>
-          </td>
-          <td>
-            <div id="panoramaDiv"  style="display:none;">
-              <button><img src="/left_arrow.png" width="40" id="prevLink"></button>
-              <img id="panorama" src="/0.0,0.0,15.jpg" alt="waypoint" width="900" height="467">
-              <button><img src="/right_arrow.png" width="40" id="nextLink"></button>
-              
-            </div>
-          </td>
-        </tr>
-      </table>
+          <map name="map">
+          <area shape="circle" coords="98,258,6" onclick="showDiv()" alt="waypoint1">
+          <area shape="circle" coords="238,189,6" onclick="showDiv()" alt="waypoint2">
+          <area shape="circle" coords="214,292,6" onclick="showDiv()" alt="waypoint3">
+          <area shape="circle" coords="319,244,6" onclick="showDiv()" alt="waypoint4">
+          <area shape="circle" coords="295,329,6" onclick="showDiv()" alt="waypoint5">
+          <area shape="circle" coords="370,174,6" onclick="showDiv()" alt="waypoint6">
+          </map>
+        </div>
+        <div id="panoramaDiv"  style="display:none; width:100%" align="center">
+          <button><img src="/left_arrow.png" width="40" id="prevLink"></button>
+          <img id="panorama" src="/0.0,0.0,15.jpg" alt="waypoint" width="1350" height="800">
+          <button><img src="/right_arrow.png" width="40" id="nextLink"></button>
+          <button onclick="showMap()">Return to map</button>
+        </div>
+        
   </body>
 </html>
