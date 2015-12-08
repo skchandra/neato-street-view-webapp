@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+  <head>
+  <script>
+    window.onload = initLinks;
+
+    var thisPic = 15;
+
+    function initLinks() {
+      document.getElementById("prevLink").onclick = processPrevious;
+      document.getElementById("nextLink").onclick = processNext;
+    }
+
+    function processPrevious() {
+      if (thisPic > 31) {
+        thisPic = 1;
+      }
+      thisPic++;
+      document.getElementById("panorama").src = "/0.0,0.0,"+thisPic+".jpg";
+      return false;
+    }
+
+    function processNext() {
+      if (thisPic < 2) {
+        thisPic = 32;
+      }
+      thisPic--;
+      document.getElementById("panorama").src = "/0.0,0.0,"+thisPic+".jpg";
+      return false;
+    }
+
+    function showDiv() {
+      document.getElementById('panoramaDiv').style.display = "block";
+      document.getElementById('map').style.display = "none";
+    }
+
+    function showMap() {
+      document.getElementById('map').style.display = "block";
+      document.getElementById('panoramaDiv').style.display = "none";
+    }
+  </script>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Neato Street View</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Neato Street View - Computational Robotics Fall 2015 Final Project</h1>
+        <p class="header"></p>
+      </header>
+	   
+      <div id="map" style="display:block" align="center">
+          <img src="/map.png" alt="CC300"
+          usemap="#map">
+
+          <map name="map">
+          <area shape="circle" coords="98,258,6" onclick="showDiv()" alt="waypoint1">
+          <area shape="circle" coords="238,189,6" onclick="showDiv()" alt="waypoint2">
+          <area shape="circle" coords="214,292,6" onclick="showDiv()" alt="waypoint3">
+          <area shape="circle" coords="319,244,6" onclick="showDiv()" alt="waypoint4">
+          <area shape="circle" coords="295,329,6" onclick="showDiv()" alt="waypoint5">
+          <area shape="circle" coords="370,174,6" onclick="showDiv()" alt="waypoint6">
+          </map>
+        </div>
+        <div id="panoramaDiv"  style="display:none; width:100%" align="center">
+          <button><img src="/left_arrow.png" width="40" id="prevLink"></button>
+          <img id="panorama" src="/0.0,0.0,15.jpg" alt="waypoint" width="1350" height="800">
+          <button><img src="/right_arrow.png" width="40" id="nextLink"></button>
+          <button onclick="showMap()">Return to map</button>
+        </div>
+        
+  </body>
+</html>
