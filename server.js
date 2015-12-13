@@ -1,29 +1,20 @@
 // server.js
 
-// Generate a new instance of express server.
-var express = require('express'), 
-	http = require('http'),
-	fs = require("fs"),
+var path = require("path");
+var express = require("express"),
     sqlite3 = require('sqlite3').verbose(),
     db = new sqlite3.Database('neato_street_view.sqlite');
-
 var app = express();
+
+app.use(express.static('./public'));
 
 app.use(express.static(__dirname + '/images'));
 
-var port = process.env.PORT || 5000;
-var host = process.env.HOST || "127.0.0.1";
-
-// Starts the server itself
-var server = http.createServer(app).listen(port, host, function() {
-  console.log("Server listening to %s:%d within %s environment",
-              host, port, app.get('env'));
+app.get('/', function (req, res){
+  res.sendFile(path.join('/index.html'));
 });
 
-// At the root of your website, we show the index.html page
-app.get('/', function(req, res) {
-  res.sendfile('./public/index.html')
-});
+app.listen(process.env.PORT || 3000);
 
 // Database initialization
 db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='panoramas'",
