@@ -4,7 +4,7 @@
   <script src='javascripts/sql.js'></script>
 
   <script>
-    window.onload = initLinks;
+    // window.onload = initLinks;
 
     var thisPic = 15;
 
@@ -20,39 +20,46 @@
     };
     xhr.send();
 
-    function initLinks() {
-      document.getElementById("prevLink").onclick = processPrevious;
-      document.getElementById("nextLink").onclick = processNext;
-    }
+    // function initLinks() {
+    //   document.getElementById("prevLink").onclick = processPrevious;
+    //   document.getElementById("nextLink").onclick = processNext;
+    // }
 
-    function processPrevious() {
-      if (thisPic > 31) {
-        thisPic = 1;
+    function processPrevious(x, y, theta) {
+      deg = theta -1;
+      if (deg<1){
+        deg = 27;
       }
-      thisPic++;
-      document.getElementById("panorama").src = "images/0.0,0.0,"+thisPic+".jpg";
+      var stmt = db.prepare("SELECT * FROM panoramaIter1 WHERE x=$x AND y=$y AND deg=$deg");
+      var obj = stmt.getAsObject({$x: x, $y: y, $deg: theta-1}); // {col1:1, col2:111}
+      document.getElementById('panorama').src = obj.Address;
       return false;
     }
 
-    function processNext() {
-      if (thisPic < 2) {
-        thisPic = 32;
+    function processNext(x, y, theta) {
+      deg = theta +1;
+      if (deg>27){
+        deg = 1;
       }
-      thisPic--;
-      document.getElementById("panorama").src = "images/0.0,0.0,"+thisPic+".jpg";
+      var stmt = db.prepare("SELECT * FROM panoramaIter1 WHERE x=$x AND y=$y AND deg=$deg");
+      var obj = stmt.getAsObject({$x: x, $y: y, $deg: theta+1}); // {col1:1, col2:111}
+      document.getElementById('panorama').src = obj.Address;
       return false;
+    }
+
+    function changePanorama (x, y, theta) {
+      document.getElementById("prevLink").onclick = processPrevious(x, y, theta);
+      document.getElementById("nextLink").onclick = processNext(x, y, theta);
     }
 
     function showDiv(x, y, theta) {
-      // var res = db.exec("SELECT * FROM panoramaIter1")
-      // var res = db.run("SELECT * FROM panoramaIter1 WHERE x=? AND y=? AND deg=?", [x,y,theta])
       var stmt = db.prepare("SELECT * FROM panoramaIter1 WHERE x=$x AND y=$y AND deg=$deg");
       var obj = stmt.getAsObject({$x: x, $y: y, $deg: theta}); // {col1:1, col2:111}
-
       // res = /images/0.0,0.0,0.0.jpg
       document.getElementById('panorama').src = obj.Address;
       document.getElementById('panoramaDiv').style.display = "block";
       document.getElementById('map').style.display = "none";
+      changePanorama(x, y, theta);
     }
 
     function showMap() {
@@ -82,19 +89,20 @@
 	   
       <div id="map" style="display:block" align="center">
           <img src="images/map.png" alt="CC300"
+
           usemap="#map">
 
           <map name="map">
-          <area id="waypoint" shape="circle" coords="98,258,6" onclick="showDiv(1, 2, 23.6)" alt="1">
+          <area id="waypoint" shape="circle" coords="98,258,6" onclick="showDiv(1, 2, 1)" alt="1">
 
-          <area id="waypoint" shape="circle" coords="238,189,6" onclick="showDiv(1, 2, 23.6)" alt="2">
-          <area id="waypoint" shape="circle" coords="214,292,6" onclick="showDiv(1, 2, 23.6)" alt="3">
-          <area id="waypoint" shape="circle" coords="319,244,6" onclick="showDiv(1, 2, 23.6)" alt="4">
-          <area id="waypoint" shape="circle" coords="295,329,6" onclick="showDiv(1, 2, 23.6)" alt="5">
-          <area id="waypoint" shape="circle" coords="370,174,6" onclick="showDiv(1, 2, 23.6)" alt="6">
+          <area id="waypoint" shape="circle" coords="238,189,20" onclick="showDiv(1, 2, 68.2)" alt="2">
+          <area id="waypoint" shape="circle" coords="214,292,20" onclick="showDiv(1, 2, 68.2)" alt="3">
+          <area id="waypoint" shape="circle" coords="319,244,20" onclick="showDiv(1, 2, 68.2)" alt="4">
+          <area id="waypoint" shape="circle" coords="295,329,20" onclick="showDiv(1, 2, 68.2)" alt="5">
+          <area id="waypoint" shape="circle" coords="370,174,20" onclick="showDiv(1, 2, 68.2)" alt="6">
           </map>
         </div>
-        <div id="panoramaDiv"  style="display:none; width:1%" align="center">
+        <div id="panoramaDiv"  style="display:none; width:100%" align="center">
           <button><img src="images/left_arrow.png" width="40" id="prevLink"></button>
           <img id="panorama" src="" alt="waypoint" width="1350" height="800">
           <button><img src="images/right_arrow.png" width="40" id="nextLink"></button>
