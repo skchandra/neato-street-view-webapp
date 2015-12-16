@@ -1,10 +1,24 @@
 <!doctype html>
 <html>
   <head>
+  <script src='javascripts/sql.js'></script>
+
   <script>
     window.onload = initLinks;
 
     var thisPic = 15;
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/PanoramaDatabase.db',  true);
+    xhr.responseType = 'arraybuffer';
+
+    xhr.onload = function(e) {
+      var uInt8Array = new Uint8Array(this.response);
+      db = new SQL.Database(uInt8Array);
+      // var contents = db.exec("SELECT * FROM panoramaIter1");
+      // contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
+    };
+    xhr.send();
 
     function initLinks() {
       document.getElementById("prevLink").onclick = processPrevious;
@@ -16,7 +30,7 @@
         thisPic = 1;
       }
       thisPic++;
-      document.getElementById("panorama").src = "/0.0,0.0,"+thisPic+".jpg";
+      document.getElementById("panorama").src = "images/0.0,0.0,"+thisPic+".jpg";
       return false;
     }
 
@@ -25,11 +39,18 @@
         thisPic = 32;
       }
       thisPic--;
-      document.getElementById("panorama").src = "/0.0,0.0,"+thisPic+".jpg";
+      document.getElementById("panorama").src = "images/0.0,0.0,"+thisPic+".jpg";
       return false;
     }
 
-    function showDiv() {
+    function showDiv(x, y, theta) {
+      // var res = db.exec("SELECT * FROM panoramaIter1")
+      // var res = db.run("SELECT * FROM panoramaIter1 WHERE x=? AND y=? AND deg=?", [x,y,theta])
+      var stmt = db.prepare("SELECT * FROM panoramaIter1 WHERE x=$x AND y=$y AND deg=$deg");
+      var obj = stmt.getAsObject({$x: x, $y: y, $deg: theta}); // {col1:1, col2:111}
+
+      // res = /images/0.0,0.0,0.0.jpg
+      document.getElementById('panorama').src = obj.Address;
       document.getElementById('panoramaDiv').style.display = "block";
       document.getElementById('map').style.display = "none";
     }
@@ -44,8 +65,8 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>Neato Street View</title>
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <!-- <link rel="stylesheet" href="stylesheets/styles.css"> -->
+    <!-- <link rel="stylesheet" href="stylesheets/github-light.css"> -->
     <script src="javascripts/scale.fix.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
@@ -60,22 +81,23 @@
       </header>
 	   
       <div id="map" style="display:block" align="center">
-          <img src="/map.png" alt="CC300"
+          <img src="images/map.png" alt="CC300"
           usemap="#map">
 
           <map name="map">
-          <area shape="circle" coords="98,258,6" onclick="showDiv()" alt="waypoint1">
-          <area shape="circle" coords="238,189,6" onclick="showDiv()" alt="waypoint2">
-          <area shape="circle" coords="214,292,6" onclick="showDiv()" alt="waypoint3">
-          <area shape="circle" coords="319,244,6" onclick="showDiv()" alt="waypoint4">
-          <area shape="circle" coords="295,329,6" onclick="showDiv()" alt="waypoint5">
-          <area shape="circle" coords="370,174,6" onclick="showDiv()" alt="waypoint6">
+          <area id="waypoint" shape="circle" coords="98,258,6" onclick="showDiv(1, 2, 23.6)" alt="1">
+
+          <area id="waypoint" shape="circle" coords="238,189,6" onclick="showDiv(1, 2, 23.6)" alt="2">
+          <area id="waypoint" shape="circle" coords="214,292,6" onclick="showDiv(1, 2, 23.6)" alt="3">
+          <area id="waypoint" shape="circle" coords="319,244,6" onclick="showDiv(1, 2, 23.6)" alt="4">
+          <area id="waypoint" shape="circle" coords="295,329,6" onclick="showDiv(1, 2, 23.6)" alt="5">
+          <area id="waypoint" shape="circle" coords="370,174,6" onclick="showDiv(1, 2, 23.6)" alt="6">
           </map>
         </div>
-        <div id="panoramaDiv"  style="display:none; width:100%" align="center">
-          <button><img src="/left_arrow.png" width="40" id="prevLink"></button>
-          <img id="panorama" src="/0.0,0.0,15.jpg" alt="waypoint" width="1350" height="800">
-          <button><img src="/right_arrow.png" width="40" id="nextLink"></button>
+        <div id="panoramaDiv"  style="display:none; width:1%" align="center">
+          <button><img src="images/left_arrow.png" width="40" id="prevLink"></button>
+          <img id="panorama" src="" alt="waypoint" width="1350" height="800">
+          <button><img src="images/right_arrow.png" width="40" id="nextLink"></button>
           <button onclick="showMap()">Return to map</button>
         </div>
         
