@@ -2,6 +2,11 @@
 <html>
   <head>
   <script src='javascripts/sql.js'></script>
+  <script src="krpano-1.18.5/viewer/embedpano.js"></script>
+
+  <div id="pano" style="width:100%; height:100%;"></div>
+
+  <script> embedpano({swf:"krpano-1.18.5/viewer/krpano.swf", xml:"krpano-1.18.5/viewer/krpano.xml", target:"pano", html5:"prefer"}); </script>
 
   <script>
     window.onload = initLinks;
@@ -29,7 +34,7 @@
       if (thisPic > 31) {
         thisPic = 1;
       }
-      thisPic++;
+      thisPic--;
       document.getElementById("panorama").src = "images/0.0,0.0,"+thisPic+".jpg";
       return false;
     }
@@ -38,7 +43,7 @@
       if (thisPic < 2) {
         thisPic = 32;
       }
-      thisPic--;
+      thisPic++;
       document.getElementById("panorama").src = "images/0.0,0.0,"+thisPic+".jpg";
       return false;
     }
